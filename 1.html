@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>备案信息填写</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>备案信息填写</h1>
+    <form id="registrationForm" action="your-server-side-script" method="post">
+        <div class="form-group">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" name="name" required>
+            <div class="error" id="nameError"></div>
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱:</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error" id="emailError"></div>
+        </div>
+        <div class="form-group">
+            <label for="phone">电话:</label>
+            <input type="tel" id="phone" name="phone">
+            <div class="error" id="phoneError"></div>
+        </div>
+        <div class="form-group">
+            <label for="address">地址:</label>
+            <input type="text" id="address" name="address">
+            <div class="error" id="addressError"></div>
+        </div>
+        <div class="form-group">
+            <label for="country">国家:</label>
+            <select id="country" name="country" required>
+                <option value="">选择国家</option>
+                <option value="china">中国</option>
+                <option value="usa">美国</option>
+                <!-- Add more countries as needed -->
+            </select>
+            <div class="error" id="countryError"></div>
+        </div>
+        <div class="form-group">
+            <label>性别:</label>
+            <input type="radio" id="male" name="gender" value="male" required>
+            <label for="male">男</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female">女</label>
+            <div class="error" id="genderError"></div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="提交">
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            var isValid = true;
+            var errors = {
+                nameError: '',
+                emailError: '',
+                phoneError: '',
+                addressError: '',
+                countryError: '',
+                genderError: ''
+            };
+
+            // Validate name
+            var name = document.getElementById('name').value;
+            if (!name.trim()) {
+                errors.nameError = '姓名不能为空';
+                isValid = false;
+            } else {
+                document.getElementById('nameError').textContent = '';
+            }
+
+            // Validate email
+            var email = document.getElementById('email').value;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errors.emailError = '邮箱格式不正确';
+                isValid = false;
+            } else {
+                document.getElementById('emailError').textContent = '';
+            }
+
+            // Validate phone
+            var phone = document.getElementById('phone').value;
+            if (phone && !/^\d{3}-\d{3}-\d{4}$/.test(phone)) {
+                errors.phoneError = '电话格式应为123-456-7890';
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').textContent = '';
+            }
+
+            // Validate address
+            var address = document.getElementById('address').value;
+            if (!address.trim()) {
+                errors.addressError = '地址不能为空';
+                isValid = false;
+            } else {
+                document.getElementById('addressError').textContent = '';
+            }
+
+            // Validate country
+            var country = document.getElementById('country').value;
+            if (country === '') {
+                errors.countryError = '请选择国家';
+                isValid = false;
+            } else {
+                document.getElementById('countryError').textContent = '';
+            }
+
+            // Validate gender
+            var gender = document.querySelector('input[name="gender"]:checked');
+            if (!gender) {
+                errors.genderError = '请选择性别';
+                isValid = false;
+            } else {
+                document.getElementById('genderError').textContent = '';
+            }
+
+            // Display errors
+            document.getElementById('nameError').textContent = errors.nameError;
+            document.getElementById('emailError').textContent = errors.emailError;
+            document.getElementById('phoneError').textContent = errors.phoneError;
+            document.getElementById('addressError').textContent = errors.addressError;
+            document.getElementById('countryError').textContent = errors.countryError;
+            document.getElementById('genderError').textContent = errors.genderError;
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
